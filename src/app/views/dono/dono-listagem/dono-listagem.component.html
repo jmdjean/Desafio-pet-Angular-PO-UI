@@ -29,7 +29,6 @@
                 <th>
                     <label>Telefone</label>
                 </th>
-
                 <th>
                     <label>Ações</label>
                 </th>
@@ -58,21 +57,17 @@
     </div>
 
     <div class="tabela-listagem-padrao">
-    
-            <po-table
+        <po-table
             [p-columns]="columns"
             [p-items]="donos"
             [p-actions]="tableActions"
             p-sort="true"
             (p-sort-by)="OrdenarTabela($event)"
-            
             >
-            </po-table>
-    
+        </po-table>
     </div>
 
 </po-page-list>
-
 
 <po-modal
   #advancedFilter

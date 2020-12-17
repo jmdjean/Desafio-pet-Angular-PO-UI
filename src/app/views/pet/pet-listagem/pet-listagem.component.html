@@ -1,4 +1,4 @@
-<div class="header-pagina-padrao">
+<!-- <div class="header-pagina-padrao">
     <h3>{{ nomeTela }}</h3>
     <button class="btn btn-dark" (click)="abrirModalAdicionar()">
         <i class="fas fa-plus fa-sm"></i>  &nbsp; adicionar
@@ -11,9 +11,10 @@
         <input type="text" placeholder="Digite nome, apelido, raça, especie ou dono " [(ngModel)]="filtro" class="form-control" name="filtro" id="filtro">
     </div>
 </div>
-
-<div class="tabela-listagem-padrao">
-    <table class="table table-striped" *ngIf="pets">
+ -->
+ 
+<div class="tabela-listagem-padrao" hidden>
+    <table class="table table-striped" *ngIf="pets" >
         <thead>
             <th>
                 <label>Nome</label>
@@ -61,3 +62,67 @@
         </h2>
     </div>
 </div>
+
+ <po-page-list
+    p-title="Lista de pets"
+    [p-actions]="actions"
+    [p-disclaimer-group]="disclaimerGroup"
+    [p-filter]="filter">
+
+    <div class="tabela-listagem-padrao">
+        <po-table
+            [p-columns]="columns"
+            [p-items]="pets"
+            [p-actions]="tableActions"
+            p-sort="true"
+            (p-sort-by)="OrdenarTabela($event)"
+        >
+        </po-table>
+    </div>
+</po-page-list>
+
+<po-modal
+    #advancedFilter
+    p-title="Busca avançada"
+    [p-primary-action]="advancedFilterPrimaryAction"
+    [p-secondary-action]="advancedFilterSecondaryAction">
+
+  <form #f="ngForm">
+    <po-input
+        class="po-sm-6"
+        name="name"
+        [(ngModel)]="nomeFiltro"
+        p-label="Nome">
+    </po-input>
+
+    <po-input
+        class="po-sm-6"
+        name="apelido"
+        [(ngModel)]="apelidoFiltro"
+        p-label="Apelido">
+    </po-input>
+
+  <po-input
+        class="po-sm-6"
+        name="raca"
+        [(ngModel)]="racaFiltro"
+        p-label="Raça">
+   </po-input>
+
+   <po-input
+        class="po-sm-6"
+        name="especie"
+        [(ngModel)]="especieFiltro"
+        p-label="Especie">
+    </po-input>
+
+    <po-input
+        class="po-sm-12"
+        name="dono"
+        [(ngModel)]="nomeDonoFiltro"
+        p-label="Dono">
+    </po-input>
+  </form>
+
+</po-modal>
+
