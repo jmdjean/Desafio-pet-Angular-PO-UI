@@ -6,7 +6,7 @@
 </div>
 
 <div class="modal-body">
-    <form>
+   <!--  <form>
         <div class="form-group">
             <label for="nome">Nome</label>
             <input type="text" [(ngModel)]="dono.name" class="form-control" name="nome" id="nome"
@@ -35,10 +35,33 @@
                 <p [innerHTML]="mensagemErroTelefone"></p>
             </span>
         </div>
+    </form> -->
+
+    <form #formCustomer="ngForm">
+        <po-input class="po-md-12"
+            name="name"
+            [(ngModel)]="dono.name"
+            p-required
+            p-label="Nome">
+        </po-input>
+
+        <po-input class="po-md-12"
+            name="email"
+            [(ngModel)]="dono.email"
+            p-required
+            p-label="Email">
+        </po-input>
+
+        <po-input class="po-md-12"
+            name="phone"
+            [(ngModel)]="dono.phone"
+            p-label="Telefone">
+        </po-input>
+
     </form>
 </div>
 
 <div class="modal-footer">
-    <button type="button" class="btn btn-outline-primary" (click)="fecharModal()">fechar</button>
+    <button type="button" class="btn btn-outline-primary" (click)="fecharModal()" >fechar</button>
     <button type="button" class="btn btn-dark" (click)="salvar()">salvar</button>
 </div>

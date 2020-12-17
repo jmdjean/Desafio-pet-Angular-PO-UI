@@ -28,6 +28,7 @@ export class DonoAdicionarComponent implements OnInit {
   }
 
   public salvar() {
+    
     if (this.validarDono()) {
       this.cadastrarDono();
     }

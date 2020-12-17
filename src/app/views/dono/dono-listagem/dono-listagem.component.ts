@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { PoTableAction, PoTableColumn } from '@po-ui/ng-components';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { PoDisclaimer, PoDisclaimerGroup, PoModalAction, PoModalComponent, PoPageAction, PoPageFilter, PoTableAction, PoTableColumn } from '@po-ui/ng-components';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Dono } from 'src/app/models/dono';
 import { DonoService } from 'src/app/services/dono.service';
@@ -18,15 +18,46 @@ export class DonoListagemComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) { }
 
+  public nomeFiltro: string;
+  public emailFiltro: string;
+  public phoneFiltro: string;
+
   public nomeTela = "Donos";
   public donos: Array<Dono>;
+  public filtro: string = '';
+  
+  @ViewChild('advancedFilter', { static: true }) advancedFilter: PoModalComponent;
 
-  public filtro: string;
+  public readonly advancedFilterPrimaryAction: PoModalAction = {
+    action: this.onConfirmAdvancedFilter.bind(this),
+    label: 'Pesquisar'
+  };
+
+  public readonly advancedFilterSecondaryAction: PoModalAction = {
+    action: () => this.advancedFilter.close(),
+    label: 'Cancelar'
+  };
 
   public columns: Array<PoTableColumn> = [
     { property: 'name', label: 'Nome' },
     { property: 'email', label: 'Email' },
     { property: 'phone', label: 'Telefone' }
+  ];
+
+  public readonly disclaimerGroup: PoDisclaimerGroup = {
+    change: this.onChangeDisclaimerGroup.bind(this),
+    disclaimers: [],
+    title: 'Filtros aplicados em nossa pesquisa'
+  };
+
+  public readonly filter: PoPageFilter = {
+    action: this.pesquisaRapida.bind(this),
+    advancedAction: this.openAdvancedFilter.bind(this),
+    placeholder: 'Pesquisa rápida ...'
+  };
+
+  public readonly actions: Array<PoPageAction> = [
+    { action: this.abrirModalAdicionar.bind(this), label: 'Cadastrar', icon: 'po-icon po-icon-plus' }
   ];
 
   public readonly tableActions: Array<PoTableAction> = [
@@ -49,7 +80,37 @@ export class DonoListagemComponent implements OnInit {
   }
 
   //#region TABELA
-  OrdenarTabela(event) {
+  private onConfirmAdvancedFilter() {
+    const addDisclaimers = (property: string, value: string, label: string) =>
+      value && this.disclaimerGroup.disclaimers.push({property, value, label: `${label}: ${value}`});
+
+    this.disclaimerGroup.disclaimers = [];
+
+    addDisclaimers('name', this.nomeFiltro, 'Nome');
+    addDisclaimers('email', this.emailFiltro, 'Email');
+    addDisclaimers('phone', this.phoneFiltro, 'Phone');
+
+    this.advancedFilter.close();
+  }
+
+  private openAdvancedFilter() {
+    this.advancedFilter.open();
+  }
+
+  private onChangeDisclaimerGroup(disclaimers: Array<PoDisclaimer>) {
+
+    disclaimers.forEach(disclaimer => {
+      console.log(disclaimer);
+    });
+
+    /*  if (!this.searchFilters.search) {
+       this.searchTerm = undefined;
+     }
+ 
+     this.loadData(this.searchFilters); */
+  }
+
+  public OrdenarTabela(event) {
     let params: any = {};
 
     if (event) {
@@ -67,6 +128,14 @@ export class DonoListagemComponent implements OnInit {
     else {
       this.donos = this.donos.reverse();
     }
+  }
+
+  private pesquisaRapida() {
+    this.disclaimerGroup.disclaimers = [{
+      label: 'Pesquisa rápida: ${this.filtro}',
+      property: 'search',
+      value: this.filtro
+    }];
   }
   //#endregion
 
