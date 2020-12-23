@@ -1,13 +1,14 @@
 export class Pet {
     
-    public id: string;
-    public name: string;
-    public nickName: string;
-    public breed: string;
-    public species: string;
-    public donoName: string;
-    public donoEmail: string;
-    public donoPhone: string;
-    public ownerId: string;
-    
+    id: string;
+    name: string;
+    nickName: string;
+    breed: string;
+    species: string;
+    donoName: string;
+    donoEmail: string;
+    donoPhone: string;
+    ownerId: string;
+    size: number;
+    birthday: Date;
 }

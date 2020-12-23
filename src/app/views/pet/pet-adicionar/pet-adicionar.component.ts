@@ -14,7 +14,7 @@ import { PetService } from 'src/app/services/pet.service';
 })
 export class PetAdicionarComponent implements OnInit {
 
-  public donos: Array<Dono>;
+  public donos: any[] = [];
   public pet: Pet = new Pet;
   public modalRef: NgbModalRef;
 
@@ -105,8 +105,8 @@ export class PetAdicionarComponent implements OnInit {
 
   public buscarDono() {
     this.donoService.buscarDonos()
-      .subscribe(res => {
-        this.donos = res;
+      .then(res => {
+        this.donos = res.items;
 
         this.spinner.hide();
       }, error => {

@@ -28,19 +28,20 @@ export class DonoAdicionarComponent implements OnInit {
   }
 
   public salvar() {
-    
+
     if (this.validarDono()) {
       this.cadastrarDono();
     }
   }
 
   public cadastrarDono() {
-    this.donoService.criarDono(this.dono).subscribe(() => {
-      this.toastr.success('', 'Dono cadastrado com sucesso.', {timeOut: 2000});
-      this.modalRef.close({ result: true, page: this.modalRef.componentInstance.page, acao: 'cadastro' });
-    }, () => {
-      this.toastr.error('', 'Não foi possivel cadastrar o dono!', {timeOut: 2000});
-    });
+    this.donoService.criarDono(this.dono)
+      .then(() => {
+        this.toastr.success('', 'Dono cadastrado com sucesso.', { timeOut: 2000 });
+        this.modalRef.close({ result: true, page: this.modalRef.componentInstance.page, acao: 'cadastro' });
+      }, () => {
+        this.toastr.error('', 'Não foi possivel cadastrar o dono!', { timeOut: 2000 });
+      });
   }
 
   public limparValidacao() {

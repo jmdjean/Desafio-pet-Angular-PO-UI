@@ -13,6 +13,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxMaskModule } from 'ngx-mask';
 import { ToastrModule } from 'ngx-toastr';
 import { SharedModule } from './shared/shared.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { PoStorageModule } from '@po-ui/ng-storage';
+import { PoSyncModule, PoSyncService } from '@po-ui/ng-sync';
 
 @NgModule({
   declarations: [
@@ -29,9 +33,14 @@ import { SharedModule } from './shared/shared.module';
     AppRoutingModule,
     NgbModule,
     NgxSpinnerModule,
-    SharedModule
+    SharedModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    PoStorageModule.forRoot(),
+    PoSyncModule
   ],
-  providers: [],
+  providers: [
+
+  ],
   exports: [
     NgxMaskModule
   ],

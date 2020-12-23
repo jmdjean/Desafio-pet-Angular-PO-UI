@@ -1,7 +1,10 @@
 export class Dono {
-    public id: string;
-    public name: string;
-    public email: string;
-    public phone: string;
+    internalId?: string;
+    id: string;
+    name: string;
+    email: string;
+    birthday: string;
+    address: string;
+    phone: string;
 }
 

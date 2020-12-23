@@ -13,7 +13,7 @@ import { DonoService } from 'src/app/services/dono.service';
 export class PetVisualizarComponent implements OnInit {
 
   public pet: Pet = new Pet;
-  public donos: Array<Dono>;
+  public donos: any[] = [];
   public modalRef: NgbModalRef;
 
   public camposBloqueados = true;
@@ -38,8 +38,8 @@ export class PetVisualizarComponent implements OnInit {
   public buscarDonos() {
     this.spinner.show();
     this.donoService.buscarDonos()
-      .subscribe(res => {
-        this.donos = res;
+      .then(res => {
+        this.donos = res.items;
         this.vincularDonoAoPet();
         this.spinner.hide();
       }, error => {

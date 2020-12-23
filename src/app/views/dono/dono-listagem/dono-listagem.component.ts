@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { PoDisclaimer, PoDisclaimerGroup, PoModalAction, PoModalComponent, PoPageAction, PoPageFilter, PoTableAction, PoTableColumn } from '@po-ui/ng-components';
+import { PoDisclaimer, PoDisclaimerGroup, PoModalAction, PoModalComponent, PoPageAction, PoPageFilter, PoTableAction, PoTableColumn, PoTableComponent } from '@po-ui/ng-components';
+import { PoSyncService } from '@po-ui/ng-sync';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Dono } from 'src/app/models/dono';
 import { DonoService } from 'src/app/services/dono.service';
 import { ModalService } from 'src/app/services/shared/modal.service';
+import { SyncService } from 'src/app/services/sync.service';
 
 @Component({
   selector: 'app-dono-listagem',
@@ -15,18 +17,22 @@ export class DonoListagemComponent implements OnInit {
   constructor(
     private donoService: DonoService,
     private modalService: ModalService,
-    private spinner: NgxSpinnerService
-  ) { }
+    private spinner: NgxSpinnerService,
+    private poSync: PoSyncService,
+    private syncService: SyncService
+  ) {
+  }
 
   public nomeFiltro: string;
   public emailFiltro: string;
   public phoneFiltro: string;
 
   public nomeTela = "Donos";
-  public donos: Array<Dono>;
+  public donos: any[] = [];
   public filtro: string = '';
-  
+
   @ViewChild('advancedFilter', { static: true }) advancedFilter: PoModalComponent;
+  @ViewChild('table', { static: true }) table: PoTableComponent;
 
   public readonly advancedFilterPrimaryAction: PoModalAction = {
     action: this.onConfirmAdvancedFilter.bind(this),
@@ -67,7 +73,6 @@ export class DonoListagemComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.donos = [];
     this.modalService.resultConfirmDialog$.asObservable().subscribe(res => {
       if (res != undefined) {
         if (res.result && res.page === 'dono') {
@@ -76,13 +81,17 @@ export class DonoListagemComponent implements OnInit {
       }
     })
 
-    this.buscarDonos();
+    this.syncService.getSync().subscribe((isSynched) => {
+      if (isSynched) {
+        this.buscarDonos();
+      }
+    });
   }
 
   //#region TABELA
   private onConfirmAdvancedFilter() {
     const addDisclaimers = (property: string, value: string, label: string) =>
-      value && this.disclaimerGroup.disclaimers.push({property, value, label: `${label}: ${value}`});
+      value && this.disclaimerGroup.disclaimers.push({ property, value, label: `${label}: ${value}` });
 
     this.disclaimerGroup.disclaimers = [];
 
@@ -159,17 +168,16 @@ export class DonoListagemComponent implements OnInit {
   //#endregion MODAL
 
   //#region Service
+
   public buscarDonos() {
     this.spinner.show();
 
     this.donoService.buscarDonos()
-      .subscribe(res => {
-        this.donos = res;
+      .then((response) => {
+        this.donos = response.items;
+        console.log(this.donos);
         this.spinner.hide();
-      }, error => {
-        this.donos = [];
-        this.spinner.hide();
-      });
+    });
   }
   //#endregion Service
 

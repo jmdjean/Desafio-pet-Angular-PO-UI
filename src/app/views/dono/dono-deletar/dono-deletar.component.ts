@@ -24,12 +24,13 @@ export class DonoDeletarComponent implements OnInit {
   }
 
   public deletarDono() {
-    this.donoService.deletarDono(this.dono.id).subscribe(() => {
-      this.toastr.success('', 'Dono excluído com sucesso!', { timeOut: 2000 });
-      this.modalRef.close({ result: true, page: this.modalRef.componentInstance.page, acao: 'deletar' });
-    }, () => {
-      this.toastr.error('', 'Não foi possivel excluir o dono!', { timeOut: 2000 });
-    });
+    this.donoService.deletarDono(this.dono)
+      .then(() => {
+        this.toastr.success('', 'Dono excluído com sucesso!', { timeOut: 2000 });
+        this.modalRef.close({ result: true, page: this.modalRef.componentInstance.page, acao: 'deletar' });
+      }, () => {
+        this.toastr.error('', 'Não foi possivel excluir o dono!', { timeOut: 2000 });
+      });
   }
 
   public fecharModal() {

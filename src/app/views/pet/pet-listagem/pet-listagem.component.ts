@@ -29,7 +29,7 @@ export class PetListagemComponent implements OnInit {
 
   public nomeTela = "Pets";
   public pets: Array<Pet>;
-  public donos: Array<Dono>;
+  public donos: any[] = [];
   public filtro: string;
 
   @ViewChild('advancedFilter', { static: true }) advancedFilter: PoModalComponent;
@@ -188,11 +188,11 @@ export class PetListagemComponent implements OnInit {
 
   public buscarDono() {
     this.donoService.buscarDonos()
-      .subscribe(res => {
-        this.donos = res;
+      .then(res => {
+        this.donos = res.items;
         this.vincularDonoAoPet();
 
-        this.spinner.hide();
+        this.spinner.hide() ;
       }, error => {
         this.donos = [];
         this.spinner.hide();

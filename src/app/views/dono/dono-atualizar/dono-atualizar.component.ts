@@ -41,11 +41,12 @@ export class DonoAtualizarComponent implements OnInit {
   }
 
   public atualizarDono() {
-    this.donoService.atualizarDono(this.dono).subscribe(() => {
-      this.toastr.success('', 'Dono atualizado com sucesso!', { timeOut: 2000 });
-      this.modalRef.close({ result: true, page: this.modalRef.componentInstance.page, acao: 'cadastro' });
-    }, () => {
-      this.toastr.error('', 'Não foi possivel atualizar o dono!', { timeOut: 2000 });
+    this.donoService.atualizarDono(this.dono)
+      .then(() => {
+        this.toastr.success('', 'Dono atualizado com sucesso!', { timeOut: 2000 });
+        this.modalRef.close({ result: true, page: this.modalRef.componentInstance.page, acao: 'cadastro' });
+      }, () => {
+        this.toastr.error('', 'Não foi possivel atualizar o dono!', { timeOut: 2000 });
     });
   }
 
