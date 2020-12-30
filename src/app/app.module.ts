@@ -16,7 +16,7 @@ import { SharedModule } from './shared/shared.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { PoStorageModule } from '@po-ui/ng-storage';
-import { PoSyncModule, PoSyncService } from '@po-ui/ng-sync';
+import { PoSyncModule } from '@po-ui/ng-sync';
 
 @NgModule({
   declarations: [

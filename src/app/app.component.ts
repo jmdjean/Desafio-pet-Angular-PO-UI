@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SyncService } from './services/sync.service';
+import { SetupSyncService } from './services/setupSync.service';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +10,17 @@ export class AppComponent {
   title = 'pets-jean';
 
   constructor(
-    private syncService: SyncService
+    private setupSyncService: SetupSyncService
   ) {
-    syncService.prepare();
+    //this.initSync();
+  }
+
+  async initSync(): Promise<any> {
+    let prepareSync: boolean;
+    prepareSync = await this.setupSyncService.prepareSync();
+    if (prepareSync) {
+      prepareSync = await this.setupSyncService.startSync();
+    }
   }
 
 }

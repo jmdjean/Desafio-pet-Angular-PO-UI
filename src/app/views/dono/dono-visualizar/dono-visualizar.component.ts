@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Dono } from 'src/app/models/dono';
+import { Dono } from 'src/app/models/dono.module';
 
 @Component({
   selector: 'app-dono-visualizar',

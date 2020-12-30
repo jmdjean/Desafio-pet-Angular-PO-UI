@@ -37,26 +37,36 @@
         </div>
     </form> -->
 
-    <form #formCustomer="ngForm">
+    <form [formGroup]="form">
         <po-input class="po-md-12"
             name="name"
-            [(ngModel)]="dono.name"
+            formControlName="name"
             p-required
             p-label="Nome">
         </po-input>
+        <span class="text-danger msg-erro-form" *ngIf="mensagemErroNome != ''">
+            <p [innerHTML]="mensagemErroNome"></p>
+        </span>
 
         <po-input class="po-md-12"
             name="email"
-            [(ngModel)]="dono.email"
+            formControlName="email"
             p-required
             p-label="Email">
         </po-input>
+        <span class="text-danger msg-erro-form" *ngIf="mensagemErroEmail != ''">
+            <p [innerHTML]="mensagemErroEmail"></p>
+        </span>
 
         <po-input class="po-md-12"
             name="phone"
-            [(ngModel)]="dono.phone"
+            formControlName="phone"
+            p-mask="(99) 99999-9999"
             p-label="Telefone">
         </po-input>
+        <span class="text-danger msg-erro-form" *ngIf="mensagemErroTelefone != ''">
+            <p [innerHTML]="mensagemErroTelefone"></p>
+        </span>
 
     </form>
 </div>

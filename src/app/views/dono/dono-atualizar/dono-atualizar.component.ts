@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { Dono } from 'src/app/models/dono';
+import { Dono } from 'src/app/models/dono.module';
 import { DonoService } from 'src/app/services/dono.service';
 
 @Component({

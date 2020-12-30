@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { PoDisclaimer, PoDisclaimerGroup, PoModalAction, PoModalComponent, PoPageAction, PoPageFilter, PoTableAction, PoTableColumn } from '@po-ui/ng-components';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Dono } from 'src/app/models/dono';
-import { Pet } from 'src/app/models/pet';
+import { Dono } from 'src/app/models/dono.module';
+import { Pet } from 'src/app/models/pet.module';
 import { DonoService } from 'src/app/services/dono.service';
 import { PetService } from 'src/app/services/pet.service';
 import { ModalService } from 'src/app/services/shared/modal.service';

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
-import { Dono } from 'src/app/models/dono';
+import { Dono } from 'src/app/models/dono.module';
 import { ResultadoModal } from 'src/app/models/resultadoModal';
 import { DonoAdicionarComponent } from 'src/app/views/dono/dono-adicionar/dono-adicionar.component';
 import { DonoAtualizarComponent } from 'src/app/views/dono/dono-atualizar/dono-atualizar.component';

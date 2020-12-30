@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BaseService } from './base.service';
-import { Dono } from '../models/dono';
+import { Dono } from '../models/dono.module';
 import { TokenService } from './token.service';
 import { PoResponseApi, PoSyncService } from '@po-ui/ng-sync';
 import { donoSchema } from '../schemas/dono-schema';
@@ -27,9 +27,6 @@ export class DonoService extends BaseService {
   }
 
   async get(id: number): Promise<Dono> {
-    console.log('GET DonoService');
-    console.log(id);
-
     let dono = (await this.poSyncService
       .getModel(this.schema)
       .findById(id)
@@ -47,7 +44,7 @@ export class DonoService extends BaseService {
 
   async buscarDonos(): Promise<PoResponseApi> {
     return (await this.poSyncService
-      .getModel(this.schema)
+      .getModel('dono')
       .find()
       .exec()) as PoResponseApi;
   }

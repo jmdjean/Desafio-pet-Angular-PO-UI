@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PoModule } from '@po-ui/ng-components';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { HttpClientModule } from '@angular/common/http';
@@ -16,7 +16,8 @@ import { PoSyncModule } from '@po-ui/ng-sync';
         HttpClientModule,
         PoModule,
         PoStorageModule.forRoot(),
-        PoSyncModule
+        PoSyncModule,
+        ReactiveFormsModule 
     ],
     exports: [
         CommonModule,
@@ -25,7 +26,8 @@ import { PoSyncModule } from '@po-ui/ng-sync';
         HttpClientModule,
         PoModule,
         PoStorageModule,
-        PoSyncModule
+        PoSyncModule,
+        ReactiveFormsModule
     ],
     providers: [],
     bootstrap: []

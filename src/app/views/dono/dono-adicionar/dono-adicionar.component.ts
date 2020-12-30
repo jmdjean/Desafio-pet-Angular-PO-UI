@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { Dono } from 'src/app/models/dono';
+import { Dono } from 'src/app/models/dono.module';
 import { DonoService } from 'src/app/services/dono.service';
 
 @Component({
@@ -18,13 +19,25 @@ export class DonoAdicionarComponent implements OnInit {
   public mensagemErroEmail = '';
   public mensagemErroTelefone = '';
 
+  public form: FormGroup;
+
   constructor(
     private donoService: DonoService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
     this.limparValidacao();
+    this.montarForm();
+  }
+
+  public montarForm() {
+    this.form = this.formBuilder.group({
+      name: [this.dono.name, Validators.required, Validators.minLength(3), Validators.maxLength(150)],
+      email: [ this.dono.email, Validators.compose([Validators.required, Validators.email])],
+      phone: [this.dono.phone, Validators.required, Validators.minLength(10)]
+    });
   }
 
   public salvar() {
@@ -35,6 +48,8 @@ export class DonoAdicionarComponent implements OnInit {
   }
 
   public cadastrarDono() {
+    Object.assign(this.dono, this.form.value);
+
     this.donoService.criarDono(this.dono)
       .then(() => {
         this.toastr.success('', 'Dono cadastrado com sucesso.', { timeOut: 2000 });
@@ -51,22 +66,25 @@ export class DonoAdicionarComponent implements OnInit {
   }
 
   public validarDono() {
+    var donoForm = new Dono();
+    Object.assign(donoForm, this.form.value);
+
     this.limparValidacao();
 
-    if (this.dono != undefined) {
-      if (this.dono.name == undefined || this.dono.name == '') {
+    if (donoForm != undefined) {
+      if (donoForm.name == undefined || donoForm.name == '') {
         this.mensagemErroNome = 'Nome inválido.';
       }
-      else if (this.dono.name.length < 3) {
+      else if (donoForm.name.length < 3) {
         this.mensagemErroNome = 'Nome precisa ter mais de 3 caracteres.';
       }
-      else if (this.dono.name.length >= 150) {
+      else if (donoForm.name.length >= 150) {
         this.mensagemErroNome = 'Nome precisa ter menos de 150 caracteres..';
       }
-      if (this.dono.email == undefined || !this.dono.email.includes('@') || !this.dono.email.includes('.com')) {
+      if (donoForm.email == undefined || !donoForm.email.includes('@') || !donoForm.email.includes('.com')) {
         this.mensagemErroEmail = 'Email inválido.';
       }
-      if (this.dono.phone == undefined || this.dono.phone == '' || this.dono.phone.length < 10) {
+      if (donoForm.phone == undefined || donoForm.phone == '' || donoForm.phone.length < 10) {
         this.mensagemErroTelefone = 'Telefone inválido.';
       }
 

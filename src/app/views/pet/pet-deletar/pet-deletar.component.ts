@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { Pet } from 'src/app/models/pet';
+import { Pet } from 'src/app/models/pet.module';
 import { PetService } from 'src/app/services/pet.service';
 
 @Component({

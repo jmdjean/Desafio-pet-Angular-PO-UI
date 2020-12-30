@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { PoDisclaimer, PoDisclaimerGroup, PoModalAction, PoModalComponent, PoPageAction, PoPageFilter, PoTableAction, PoTableColumn, PoTableComponent } from '@po-ui/ng-components';
 import { PoSyncService } from '@po-ui/ng-sync';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Dono } from 'src/app/models/dono';
+import { Dono } from 'src/app/models/dono.module';
 import { DonoService } from 'src/app/services/dono.service';
 import { ModalService } from 'src/app/services/shared/modal.service';
-import { SyncService } from 'src/app/services/sync.service';
+import { SetupSyncService } from 'src/app/services/setupSync.service';
 
 @Component({
   selector: 'app-dono-listagem',
@@ -19,7 +19,7 @@ export class DonoListagemComponent implements OnInit {
     private modalService: ModalService,
     private spinner: NgxSpinnerService,
     private poSync: PoSyncService,
-    private syncService: SyncService
+    private setupSyncService: SetupSyncService
   ) {
   }
 
@@ -80,10 +80,18 @@ export class DonoListagemComponent implements OnInit {
         }
       }
     })
+    //this.syncService.prepare();
 
-    this.syncService.getSync().subscribe((isSynched) => {
+    this.setupSyncService.getSync().subscribe((isSynched) => {
       if (isSynched) {
-        this.buscarDonos();
+        //this.buscarDonos();
+        this.spinner.show();
+
+        this.donoService.buscarDonos()
+          .then((response) => {
+            this.donos = response.items;
+            this.spinner.hide();
+        });
       }
     });
   }
@@ -175,7 +183,6 @@ export class DonoListagemComponent implements OnInit {
     this.donoService.buscarDonos()
       .then((response) => {
         this.donos = response.items;
-        console.log(this.donos);
         this.spinner.hide();
     });
   }

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Dono } from 'src/app/models/dono';
-import { Pet } from 'src/app/models/pet';
+import { Dono } from 'src/app/models/dono.module';
+import { Pet } from 'src/app/models/pet.module';
 import { DonoService } from 'src/app/services/dono.service';
 
 @Component({
