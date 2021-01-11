@@ -6,7 +6,7 @@
 </div>
 
 <div class="modal-body">
-    <form>
+    <!-- <form>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="nome">Nome</label>
@@ -56,6 +56,46 @@
                 <p [innerHTML]="mensagemErroDono"></p>
             </span>
         </div>
+
+    </form> -->
+    
+    <form [formGroup]="petAdicionarForm">
+        <po-input class="po-md-6"
+            name="name"
+            formControlName="name"
+            p-required
+            p-label="Nome">
+        </po-input>
+
+        <po-input class="po-md-6"
+            name="nickName"
+            formControlName="nickName"
+            p-required
+            p-label="Apelido">
+        </po-input>
+
+        <po-input class="po-md-6"
+            name="breed"
+            formControlName="breed"
+            p-required
+            p-label="Raça">
+        </po-input>
+
+        <po-input class="po-md-6"
+            name="species"
+            formControlName="species"
+            p-required
+            p-label="Especie">
+        </po-input>
+
+        <po-select 
+            class="po-md-12" 
+            name="Donos" 
+            formControlName="ownerId"
+            p-clean 
+            p-label="Donos" 
+            [p-options]="donos">
+        </po-select>
 
     </form>
 </div>

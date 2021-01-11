@@ -19,7 +19,7 @@ export class DonoAdicionarComponent implements OnInit {
   public mensagemErroEmail = '';
   public mensagemErroTelefone = '';
 
-  public form: FormGroup;
+  public donoAdicionarForm: FormGroup;
 
   constructor(
     private donoService: DonoService,
@@ -33,7 +33,7 @@ export class DonoAdicionarComponent implements OnInit {
   }
 
   public montarForm() {
-    this.form = this.formBuilder.group({
+    this.donoAdicionarForm = this.formBuilder.group({
       name: [this.dono.name, Validators.required, Validators.minLength(3), Validators.maxLength(150)],
       email: [ this.dono.email, Validators.compose([Validators.required, Validators.email])],
       phone: [this.dono.phone, Validators.required, Validators.minLength(10)]
@@ -48,7 +48,7 @@ export class DonoAdicionarComponent implements OnInit {
   }
 
   public cadastrarDono() {
-    Object.assign(this.dono, this.form.value);
+    Object.assign(this.dono, this.donoAdicionarForm.value);
 
     this.donoService.criarDono(this.dono)
       .then(() => {
@@ -67,7 +67,7 @@ export class DonoAdicionarComponent implements OnInit {
 
   public validarDono() {
     var donoForm = new Dono();
-    Object.assign(donoForm, this.form.value);
+    Object.assign(donoForm, this.donoAdicionarForm.value);
 
     this.limparValidacao();
 

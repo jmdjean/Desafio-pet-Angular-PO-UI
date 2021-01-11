@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -24,19 +25,32 @@ export class PetAdicionarComponent implements OnInit {
   public mensagemErroEspecie = '';
   public mensagemErroDono = '';
 
+  public petAdicionarForm: FormGroup;
+
   constructor(
     private donoService: DonoService,
     private petService: PetService,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
     this.donos = [];
     this.buscarDono();
     this.limparValidacao();
+    this.montarForm();
   }
 
+  public montarForm() {
+    this.petAdicionarForm = this.formBuilder.group({
+      name: [this.pet.name, Validators.required, Validators.minLength(3), Validators.maxLength(150)],
+      nickName: [ this.pet.nickName, Validators.required],
+      breed: [this.pet.breed, Validators.required],
+      species: [this.pet.species, Validators.required],
+      ownerId: [this.pet.ownerId, Validators.required]
+    });
+  }
 
   public salvar() {
     if (this.validar()) {
@@ -45,9 +59,12 @@ export class PetAdicionarComponent implements OnInit {
   }
 
   public cadastrar() {
-    this.petService.criarPet(this.pet).subscribe(() => {
-      this.toastr.success('', 'Pet cadastrado com sucesso.', { timeOut: 2000 });
-      this.modalRef.close({ result: true, page: this.modalRef.componentInstance.page, acao: 'cadastro' });
+    Object.assign(this.pet, this.petAdicionarForm.value);
+
+    this.petService.criarPet(this.pet)
+      .subscribe(() => {
+        this.toastr.success('', 'Pet cadastrado com sucesso.', { timeOut: 2000 });
+        this.modalRef.close({ result: true, page: this.modalRef.componentInstance.page, acao: 'cadastro' });
     }, () => {
       this.toastr.error('', 'Não foi possivel cadastrar o pet!', { timeOut: 2000 });
     });
@@ -64,29 +81,32 @@ export class PetAdicionarComponent implements OnInit {
   public validar() {
     this.limparValidacao();
 
+    let petForm = new Pet();
+    Object.assign(petForm, this.petAdicionarForm.value);
+    
     if (this.pet != undefined) {
       /* NOME */
-      if (this.pet.name == undefined || this.pet.name == '') {
+      if (petForm.name == undefined || this.pet.name == '') {
         this.mensagemErroNome = 'Nome inválido.';
       }
 
       /* NICKNAME */
-      if (this.pet.nickName == undefined || this.pet.nickName == '') {
+      if (petForm.nickName == undefined || petForm.nickName == '') {
         this.mensagemErroApelido = 'Apelido inválido.';
       }
 
       /* RAÇA */
-      if (this.pet.breed == undefined || this.pet.breed == '') {
+      if (petForm.breed == undefined || petForm.breed == '') {
         this.mensagemErroRaca = 'Raça inválida.';
       }
 
       /* ESPECIE */
-      if (this.pet.species == undefined || this.pet.species == '') {
+      if (petForm.species == undefined || petForm.species == '') {
         this.mensagemErroEspecie = 'Especie inválida.';
       }
 
       /* DONO */
-      if (this.pet.ownerId == undefined || this.pet.ownerId == '') {
+      if (petForm.ownerId == undefined || petForm.ownerId == '') {
         this.mensagemErroDono = 'Dono inválido.';
       }
 
@@ -104,14 +124,24 @@ export class PetAdicionarComponent implements OnInit {
   }
 
   public buscarDono() {
-    this.donoService.buscarDonos()
+
+    this.donoService.buscarDonosObservable()
+    .subscribe(res => {
+      this.donos = res;
+    });
+   /*  this.donoService.buscarDonos()
       .then(res => {
         this.donos = res.items;
-
+        //this.petAdicionarForm.ownerId.setValue
+        //this.petAdicionarForm.controls['ownerId'].setValue(selected.id);
         this.spinner.hide();
       }, error => {
         this.donos = [];
         this.spinner.hide();
       });
-  }
+
+      */
+  } 
+
+  
 }

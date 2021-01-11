@@ -19,6 +19,8 @@ export class DonoService extends BaseService {
 
   private readonly schema = donoSchema.name;
 
+  private url = this.API_URL + 'owner/';
+
   constructor(
     private http: HttpClient,
     private tokenService: TokenService,
@@ -47,6 +49,10 @@ export class DonoService extends BaseService {
       .getModel('dono')
       .find()
       .exec()) as PoResponseApi;
+  }
+
+  public buscarDonosObservable() {
+    return this.http.get<Array<Dono>>(this.url);
   }
 
   async criarDono(data: Dono): Promise<void> {
